@@ -9,36 +9,32 @@ error()   { echo -e "\033[1;31m[ERROR]\033[0m $*" >&2; }
 DOTFILES_DIR="$HOME/dotfiles"
 DOTFILES_REPO="git@github.com:wmaurin/dotfiles.git"
     
-# Check if stow is installed
 if ! command -v stow &> /dev/null; then
-    info "GNU Stow not found. Installing via dnf"
+    info "Installing stow"
     sudo dnf install -y stow
-    success "GNU Stow installed"
+else
+    info "stow already installed"
 fi
    
-# Clone or update dotfiles repository
 if [ -d "$DOTFILES_DIR" ]; then
-    info "Dotfiles directory already exists at $DOTFILES_DIR; updating repository"
+    info "Updating repository"
     cd "$DOTFILES_DIR"
     git pull || {
-        error "Failed to update dotfiles repository"
+        error "Failed to update"
         exit 1
     }
 else
-    info "Cloning dotfiles repository"
+    info "Cloning repository"
     git clone "$DOTFILES_REPO" "$DOTFILES_DIR" || {
-        error "Failed to clone dotfiles repository"
+        error "Failed to clone"
         exit 1
     }
-    success "Repository cloned to $DOTFILES_DIR"
 fi
   
-# Configure dotfiles using stow
-info "Configuring dotfiles with GNU Stow"
+info "Configuring dotfiles"
 cd "$DOTFILES_DIR"
 for package in */; do
     if [ -d "$package" ]; then
-        info "Stowing ${package%/}"
         stow "${package%/}" || {
             error "Failed to stow ${package%/}"
             exit 1

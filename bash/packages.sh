@@ -23,7 +23,7 @@ if ! command -v code &> /dev/null; then
     fi
     sudo dnf install -y code
 else
-    info "VSCode is already installed"
+    info "VSCode already installed"
 fi
 
 info "Installing Docker"
@@ -37,7 +37,7 @@ if ! command -v docker &> /dev/null; then
     sudo systemctl enable --now docker
     sudo docker version --client
 else
-    info "Docker is already installed"
+    info "Docker already installed"
 fi
 
 info "Installing kubectl"
@@ -47,7 +47,7 @@ if ! command -v kubectl &> /dev/null; then
     kubectl version --client
     rm kubectl
 else
-    info "kubectl is already installed"
+    info "kubectl already installed"
 fi
 
 success "Done"
