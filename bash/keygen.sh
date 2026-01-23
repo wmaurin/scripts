@@ -8,6 +8,8 @@ error()   { echo -e "\033[1;31m[ERROR]\033[0m $*" >&2; }
 
 if [ ! -f ~/.ssh/id_ed25519 ]; then
     info "Generating SSH key"
+    mkdir -p ~/.ssh
+    chmod 700 ~/.ssh
     ssh-keygen -t ed25519 -C "$(whoami)@$(hostname)" -f ~/.ssh/id_ed25519 -N ""
     cat ~/.ssh/id_ed25519.pub
     success "Done"
