@@ -12,24 +12,16 @@ if ! docker info &> /dev/null; then
 fi
 
 info "Stopping containers"
-if [ "$(docker ps -q)" ]; then
-    docker stop $(docker ps -q)
-fi
+docker ps -q | xargs -r docker stop
 
 info "Removing containers"
-if [ "$(docker ps -aq)" ]; then
-    docker rm $(docker ps -aq)
-fi
+docker ps -aq | xargs -r docker rm
 
 info "Removing images"
-if [ "$(docker images -q)" ]; then
-    docker rmi $(docker images -q)
-fi
+docker images -q | xargs -r docker rmi
 
 info "Removing volumes"
-if [ "$(docker volume ls -q)" ]; then
-    docker volume rm $(docker volume ls -q)
-fi
+docker volume ls -q | xargs -r docker volume rm
 
 info "Removing networks"
 docker network prune -f
