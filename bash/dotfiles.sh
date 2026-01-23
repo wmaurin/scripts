@@ -8,14 +8,14 @@ error()   { echo -e "\033[1;31m[ERROR]\033[0m $*" >&2; }
 
 DOTFILES_DIR="$HOME/dotfiles"
 DOTFILES_REPO="git@github.com:wmaurin/dotfiles.git"
-    
+
 if ! command -v stow &> /dev/null; then
     info "Installing stow"
     sudo dnf install -y stow
 else
     info "stow already installed"
 fi
-   
+
 if [ -d "$DOTFILES_DIR" ]; then
     info "Updating repository"
     cd "$DOTFILES_DIR"
@@ -30,7 +30,7 @@ else
         exit 1
     }
 fi
-  
+
 info "Configuring dotfiles"
 cd "$DOTFILES_DIR"
 for package in */; do
@@ -41,7 +41,5 @@ for package in */; do
         }
     fi
 done
-    
+
 success "Done"
-
-
