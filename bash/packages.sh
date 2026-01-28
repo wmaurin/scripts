@@ -31,7 +31,7 @@ else
 fi
 
 info "Installing kubectl"
-if ! command -v kubectl &> /dev/null; then
+if ! command -v kubectl &> /dev/null && [ ! -x /usr/local/bin/kubectl ]; then
     KUBECTL_VERSION=$(curl -L -s https://dl.k8s.io/release/stable.txt)
     curl -LO "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
     curl -LO "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl.sha256"
@@ -41,8 +41,8 @@ if ! command -v kubectl &> /dev/null; then
         exit 1
     }
     sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-    kubectl version --client
     rm -f kubectl kubectl.sha256
+    /usr/local/bin/kubectl version --client
 else
     info "kubectl already installed"
 fi
