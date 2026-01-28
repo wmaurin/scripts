@@ -18,12 +18,13 @@ sudo dnf install -y python3 python3-pip
 info "Installing Docker"
 if ! command -v docker &> /dev/null; then
     sudo dnf remove -y docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-selinux docker-engine-selinux docker-engine 2>/dev/null || true
-    sudo dnf install -y dnf-plugins-core
     if [ ! -f /etc/yum.repos.d/docker-ce.repo ]; then
-        sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+        sudo dnf config-manager addrepo --from-repofile=https://download.docker.com/linux/fedora/docker-ce.repo
     fi
     sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
     sudo systemctl enable --now docker
+    sudo usermod -aG docker "$USER"
+    info "Added $USER to docker group (log out and back in to apply)"
     sudo docker version --client
 else
     info "Docker already installed"
