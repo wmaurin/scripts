@@ -15,24 +15,6 @@ sudo dnf install -y neovim git stow htop tree jq curl wget
 info "Installing programming languages"
 sudo dnf install -y python3 python3-pip
 
-info "Installing VSCode"
-if ! command -v code &> /dev/null; then
-    if [ ! -f /etc/yum.repos.d/vscode.repo ]; then
-        sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
-        sudo tee /etc/yum.repos.d/vscode.repo > /dev/null <<'EOF'
-[code]
-name=Visual Studio Code
-baseurl=https://packages.microsoft.com/yumrepos/vscode
-enabled=1
-gpgcheck=1
-gpgkey=https://packages.microsoft.com/keys/microsoft.asc
-EOF
-    fi
-    sudo dnf install -y code
-else
-    info "VSCode already installed"
-fi
-
 info "Installing Docker"
 if ! command -v docker &> /dev/null; then
     sudo dnf remove -y docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-selinux docker-engine-selinux docker-engine 2>/dev/null || true
