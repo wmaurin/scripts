@@ -35,11 +35,14 @@ info "Configuring dotfiles"
 cd "$DOTFILES_DIR"
 for package in */; do
     if [ -d "$package" ]; then
-        stow "${package%/}" || {
+        stow --adopt "${package%/}" || {
             error "Failed to stow ${package%/}"
             exit 1
         }
     fi
 done
+
+# Restore repo versions (override any adopted files)
+git checkout .
 
 success "Done"
