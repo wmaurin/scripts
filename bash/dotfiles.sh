@@ -1,10 +1,18 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -euo pipefail
+# Enable xtrace if the DEBUG environment variable is set
+if [[ ${DEBUG-} =~ ^1|yes|true$ ]]; then
+    set -o xtrace
+fi
 
-info()    { echo -e "\033[1;34m[INFO]\033[0m $*"; }
-success() { echo -e "\033[1;32m[SUCCESS]\033[0m $*"; }
-error()   { echo -e "\033[1;31m[ERROR]\033[0m $*" >&2; }
+set -o errexit          # Exit on most errors (see the manual)
+set -o errtrace         # Ensure the error trap handler is inherited
+set -o nounset          # Disallow expansion of unset variables
+set -o pipefail         # Use last non-zero exit code in a pipeline
+
+info()    { printf '\033[1;34m[INFO]\033[0m %s\n' "$*"; }
+success() { printf '\033[1;32m[SUCCESS]\033[0m %s\n' "$*"; }
+error()   { printf '\033[1;31m[ERROR]\033[0m %s\n' "$*" >&2; }
 
 DOTFILES_DIR="$HOME/dotfiles"
 DOTFILES_REPO="git@github.com:wmaurin/dotfiles.git"
